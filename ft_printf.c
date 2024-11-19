@@ -18,7 +18,7 @@
 int	ft_putchar(char c)
 {
 	write(1, &c, 1);
-	return (0);
+	return (1);
 }
 
 int	ft_putstr(char *s)
@@ -31,7 +31,7 @@ int	ft_putstr(char *s)
 		write(1, &s[i], 1);
 		i++;
 	}
-	return (0);
+	return (i);
 }
 int	ft_convert10to16(int nb, char c)
 {
@@ -41,7 +41,9 @@ int	ft_convert10to16(int nb, char c)
 		ft_convert10to16(nb % 16, c);
 	}
 	else if ((nb < 16 && c == 'x') || (c == 'X' && nb < 10))
+	{
 		ft_putchar(BASE16[nb]);
+	}
 	else if (nb > 9 && nb < 16 && c == 'X')
 		ft_putchar(BASE16[nb] - 32);
 	return (0);
@@ -87,26 +89,30 @@ int	ft_conversions(char c, va_list argp)
 int	ft_printf(const char *format, ...)
 {
 	va_list	argp;
+	int		i;
 
+	i = 0;
 	va_start(argp, format);
 	while (*format)
 	{
 		if (*format == '%')
 		{
+			i++;
 			format++;
 			ft_conversions(*format, argp);
 		}
 		else 
 			ft_putchar(*format);
 		format++;
+		i++;
 	}
 	va_end(argp);
-	return (0);
+	return (i);
 }
 
 int main(void)
 {
-	int a = -2147483648;
+	int a = 123456789;
 	
 	ft_printf("|test pourcemtage=%%|\n");
 	printf("|test pourcemtage=%%|\n\n");
@@ -120,25 +126,24 @@ int main(void)
 	ft_printf("|test str vide=%s|\n", "");
 	printf("|test str vide=%s|\n\n", "");
 
-	ft_printf("|test hexa lower=%x|\n", 1516);
-	printf("|test hexa lower=%x|\n\n", 1516);
+	ft_printf("|test hexa lower=%x|\n", a);
+	printf("|test hexa lower=%x|\n\n", a);
 
-	ft_printf("|test hexa lower=%X|\n", 1516);
-	printf("|test hexa lower=%X|\n\n", 1516);
+	ft_printf("|test hexa upper=%X|\n", a);
+	printf("|test hexa upper=%X|\n\n", a);
 
-	ft_printf("|test decimal 1516=%d|\n", a);
-	printf("|test decimal 1516=%d|\n\n", a);
+	ft_printf("|test decimal =%d|\n", a);
+	printf("|test decimal =%d|\n\n", a);
 
-	ft_printf("|test integer 1516=%i|\n", a);
-	printf("|test integer 1516=%i|\n\n", a);
+	ft_printf("|test integer =%i|\n", a);
+	printf("|test integer =%i|\n\n", a);
 
-	ft_printf("|test unsigned integer 1516=%u|\n", 2147483647);
-	printf("|test unigned integer 1516=%u|\n\n", 2147483647);
+	ft_printf("|test unsigned integer =%u|\n", a);
+	printf("|test unigned integer =%u|\n\n", a);
 
-	printf("%d", printf("|test integer 1516=%u|\n\n", 2147483647));
 
-	printf("moi %d", ft_printf("|test pourcemtage=%%|\n"));
-	printf("printf%d", printf("|test pourcemtage=%%|\n\n"));
+	printf("moi %d\n", ft_printf("|test pourcemtage=%%|\n"));
+	printf("printf%d\n", printf("|test pourcemtage=%%|\n\n"));
 
 
 }
