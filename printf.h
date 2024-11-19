@@ -12,7 +12,7 @@
 
 #ifndef PRINTF_H
 # define PRINTF_H
-
-#include <stdarg.h>
+# define BASE16 "0123456789abcdef"
+# include <stdarg.h>
 
 #endif

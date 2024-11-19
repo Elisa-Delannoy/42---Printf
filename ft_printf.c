@@ -10,15 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "printf.h"
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdio.h>
 
-void	ft_putchar(int c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
+	return (0);
 }
 
-void	ft_putstr(char *s)
+int	ft_putstr(char *s)
 {
 	int	i;
 
@@ -28,15 +31,18 @@ void	ft_putstr(char *s)
 		write(1, &s[i], 1);
 		i++;
 	}
+	return (0);
 }
 
-void	ft_conversions(char c, va_list argp)
+int	ft_conversions(char c, va_list argp)
 {
 	if (c == 'c')
 		ft_putchar(va_arg(argp, int));
 	if (c == 's')
 		ft_putstr(va_arg(argp, char *));
-	
+	if (c == 'x')
+		ft_convertdectohexa(va_arg(argp, char *));
+	return (0);
 }
 
 int	ft_printf(const char *format, ...)
@@ -44,7 +50,6 @@ int	ft_printf(const char *format, ...)
 	va_list	argp;
 
 	va_start(argp, format);
-
 	while (*format)
 	{
 		while (*format != '%' && *format)
@@ -62,34 +67,32 @@ int	ft_printf(const char *format, ...)
 			format++;
 		}
 	}
-	return (0);
 	va_end(argp);
+	return (0);
 }
 
-
-// void	ft_convertdectohexa(int nb)
-// {
-
-// 	if (nb >= 16)
-// 	{
-// 		nb = ft_convertdectohexa(nb / 16);
-// 		nb = ft_putchar(nb % 16);
-// 	}
-// 	else
-// 		ft_putchar(nb);
-// }
-
-
-#include <stdio.h>
-int main(void)
+int	ft_convertdectohexa(int nb)
 {
-	// char *base ="0123456789abcdef";
-
-	// 11 / 16  
-
-	// printf("%c, %s, %p, ");
-
-	ft_printf("bonjour%%pourent  /  %c ecr%sire %c%c%c a", 'a', "bonj", 'b', 'c', 'd');
-
-	
+	if (nb >= 16)
+	{
+		ft_convertdectohexa(nb / 16);
+		ft_convertdectohexa(nb % 16);
+	}
+	else
+		ft_putchar(BASE16[nb]);
+	return (nb);
 }
+
+// int main(void)
+// {
+// 	// char *base ="0123456789abcdef";
+
+// 	// 11 / 16  
+
+// 	// printf("%c, %s, %p, ");
+
+// 	// ft_printf("bon%/  %c ecr%sire %c%c%c a\n", 'a', "bonj", 'b', 'c', 'd');
+// 	printf("bon%/  %c ecr%sire %c%c%c a\n", 'a', "bonj", 'b', 'c', 'd');
+// 	// printf("%d", ox);
+// 	ft_convertdectohexa(1516);
+// }
