@@ -13,43 +13,58 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-void	ft_putchar(char c)
+void	ft_putchar(int c)
 {
 	write(1, &c, 1);
 }
 
-int	ft_printf(const char *format, ...)
+void	ft_putstr(char *s)
 {
-	// va_list	argp;
-
-	// va_start(argp, format);
 	int	i;
 
 	i = 0;
-	while (format[i])
+	while (s[i])
 	{
-		while (format[i] != '%' && format[i])
+		write(1, &s[i], 1);
+		i++;
+	}
+}
+
+void	ft_conversions(char c, va_list argp)
+{
+	if (c == 'c')
+		ft_putchar(va_arg(argp, int));
+	if (c == 's')
+		ft_putstr(va_arg(argp, char *));
+	
+}
+
+int	ft_printf(const char *format, ...)
+{
+	va_list	argp;
+
+	va_start(argp, format);
+
+	while (*format)
+	{
+		while (*format != '%' && *format)
 		{
-			ft_putchar(format[i]);
-			i++;
+			ft_putchar(*format);
+			format++;
 		}
-		if (format[i] == '%')
-			i++;
-		ft_conversions(format[i]);
+		if (*format == '%')
+		{
+			format++;
+			if (*format == '%')
+				ft_putchar('%');
+			else
+				ft_conversions(*format, argp);
+			format++;
+		}
 	}
 	return (0);
-	// va_end(argp);
+	va_end(argp);
 }
-
-int	ft_conversions(char c)
-{
-	if (c == '%')
-		ft_putchar(c);
-		
-}
-
-
-
 
 
 // void	ft_convertdectohexa(int nb)
@@ -61,14 +76,8 @@ int	ft_conversions(char c)
 // 		nb = ft_putchar(nb % 16);
 // 	}
 // 	else
-// 	{
-// 		// if(nb >= 10 && nb <= 15)
-// 		// 	ft_putchar(nb +);
 // 		ft_putchar(nb);
-// 	}
 // }
-
-
 
 
 #include <stdio.h>
@@ -79,5 +88,8 @@ int main(void)
 	// 11 / 16  
 
 	// printf("%c, %s, %p, ");
-	printf("bon%%jour");
+
+	ft_printf("bonjour%%pourent  /  %c ecr%sire %c%c%c a", 'a', "bonj", 'b', 'c', 'd');
+
+	
 }
