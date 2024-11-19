@@ -13,7 +13,7 @@
 NAME = libftprintf.a
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror -I ./
-SRC =
+SRC = ft_printf.c
 OBJ = $(SRC:.c=.o)
 
 all : $(NAME)
@@ -28,6 +28,6 @@ clean :
 	rm -f $(OBJ)
 
 fclean :
-	rm -f$(NAME)
+	rm -f $(NAME)
 
 re : fclean all
