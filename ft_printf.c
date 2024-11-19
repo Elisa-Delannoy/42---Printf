@@ -47,7 +47,7 @@ int	ft_convert10to16(int nb, char c)
 	return (0);
 }
 
-int	ft_putnbr(int n)
+int	ft_putnbr(long int n) //long int meme valeur max que unsigned int
 {
 	long int	nb;
 
@@ -79,6 +79,8 @@ int	ft_conversions(char c, va_list argp)
 		ft_convert10to16(va_arg(argp, int), c);
 	else if (c == 'd' || c == 'i')
 		ft_putnbr(va_arg(argp, int));
+	else if (c == 'u')
+		ft_putnbr(va_arg(argp, unsigned int));
 	return (0);	
 }
 
@@ -104,6 +106,8 @@ int	ft_printf(const char *format, ...)
 
 int main(void)
 {
+	int a = -2147483648;
+	
 	ft_printf("|test pourcemtage=%%|\n");
 	printf("|test pourcemtage=%%|\n\n");
 
@@ -122,6 +126,19 @@ int main(void)
 	ft_printf("|test hexa lower=%X|\n", 1516);
 	printf("|test hexa lower=%X|\n\n", 1516);
 
-	ft_printf("|test decimal 1516=%d|\n", 1516);
-	printf("|test decimal 1516=%d|\n\n", 1516);
+	ft_printf("|test decimal 1516=%d|\n", a);
+	printf("|test decimal 1516=%d|\n\n", a);
+
+	ft_printf("|test integer 1516=%i|\n", a);
+	printf("|test integer 1516=%i|\n\n", a);
+
+	ft_printf("|test unsigned integer 1516=%u|\n", 2147483647);
+	printf("|test unigned integer 1516=%u|\n\n", 2147483647);
+
+	printf("%d", printf("|test integer 1516=%u|\n\n", 2147483647));
+
+	printf("moi %d", ft_printf("|test pourcemtage=%%|\n"));
+	printf("printf%d", printf("|test pourcemtage=%%|\n\n"));
+
+
 }
