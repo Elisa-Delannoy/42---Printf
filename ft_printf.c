@@ -49,7 +49,7 @@ int	ft_convert10to16(long int nb, char c, int j)
 	return (j);
 }
 
-int	ft_putnbr(long int n, int i) //long int meme valeur max que unsigned int
+int	ft_putnbr(int n, int i) //long int meme valeur max que unsigned int
 {
 	long int	nb;
 
@@ -122,9 +122,9 @@ int	ft_printf(const char *format, ...)
 	return (i);
 }
 
-int main(void)
-{
-	int a = 15254;
+// int main(void)
+// {
+// 	int a = -1;
 
 	// // ft_printf("|test pourcemtage=%%|\n");
 	// // printf("|test pourcemtage=%%|\n\n");
@@ -177,6 +177,9 @@ int main(void)
 	// printf("%d\n", ft_printf("|test adresse =%p|\n", "123456 bonjour"));
 	// printf("%d\n", printf("|test adresse =%p|\n", "123456 bonjour"));
 
-	printf("%d\n",printf("vrai %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
-	printf("%d",ft_printf("mine %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
-}
+
+
+
+	// printf("%d\n",printf("vrai %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
+	// printf("%d",ft_printf("mine %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
+// }
