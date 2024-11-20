@@ -20,7 +20,7 @@
 
 int	ft_putchar(char c);
 int	ft_putstr(char *s);
-int	ft_convert10to16(int nb, char c);
+int	ft_convert10to16(long int nb, char c, int j);
 int	ft_putnbr(long int n);
 int	ft_conversions(char c, va_list argp);
 int	ft_printf(const char *format, ...);
