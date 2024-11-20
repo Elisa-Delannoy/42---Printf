@@ -45,17 +45,15 @@ int	ft_convert10to16(long int nb, char c, int j)
 		j = j + ft_putchar(BASE16[nb]);
 	else if (nb > 9 && nb < 16 && c == 'X')
 		j = j + ft_putchar(BASE16[nb] - 32);
-	printf("\nj hexa =%d\n", j);
+	// printf("\nj hexa =%d\n", j);
 	return (j);
 }
 
-int	ft_putnbr(long int n) //long int meme valeur max que unsigned int
+int	ft_putnbr(long int n, int i) //long int meme valeur max que unsigned int
 {
 	long int	nb;
-	int			i;
 
 	nb = n;
-	i = 0;
 	if (nb < 0)
 	{
 		ft_putchar('-');
@@ -64,14 +62,11 @@ int	ft_putnbr(long int n) //long int meme valeur max que unsigned int
 	}
 	if (nb >= 10)
 	{
-		ft_putnbr(nb / 10);
-		ft_putnbr(nb % 10);
+		i = ft_putnbr(nb / 10, i);
+		i = ft_putnbr(nb % 10, i);
 	}
 	else
-	{
-		ft_putchar(nb + 48);
-		i++;
-	}
+		i = i + ft_putchar(nb + 48);
 	return (i);
 }	
 
@@ -89,14 +84,14 @@ int	ft_conversions(char c, va_list argp)
 	else if (c == 'x' || c == 'X')
 		i = ft_convert10to16(va_arg(argp, int), c, 0);
 	else if (c == 'd' || c == 'i')
-		i = ft_putnbr(va_arg(argp, long int));
+		i = ft_putnbr(va_arg(argp, long int), 0);
 	else if (c == 'u')
-		i = ft_putnbr(va_arg(argp, unsigned int));
+		i = ft_putnbr(va_arg(argp, unsigned int), 0);
 	else if (c == 'p')
 	{	 
 		ft_putchar('0');
 		ft_putchar('x');
-		i = ft_convert10to16(va_arg(argp, unsigned long int), c, 0) + 3; /*2*putchar + p*/
+		i = ft_convert10to16(va_arg(argp, unsigned long int), c, 0) + 2; /*2*putchar*/
 	}
 	return (i);
 }
@@ -120,7 +115,7 @@ int	ft_printf(const char *format, ...)
 		}
 		else
 			i = i + ft_putchar(*format);
-		printf("i = %d\n", i);
+		// printf("i = %d\n", i);
 		format++;
 	}
 	va_end(argp);
@@ -131,44 +126,44 @@ int main(void)
 {
 	int a = 15254;
 
-	// ft_printf("|test pourcemtage=%%|\n");
-	// printf("|test pourcemtage=%%|\n\n");
+	// // ft_printf("|test pourcemtage=%%|\n");
+	// // printf("|test pourcemtage=%%|\n\n");
 	// printf("%d\n", ft_printf("|test pourcentage=%%|\n"));
 	// printf("%d\n\n", printf("|test pourcentage=%%|\n"));
 
-	// // ft_printf("|test char a=%c|\n", 'a');
-	// // printf("|test char a=%c|\n\n", 'a');
+	// // // ft_printf("|test char a=%c|\n", 'a');
+	// // // printf("|test char a=%c|\n\n", 'a');
 	// printf("%d\n", ft_printf("|test char a=%c|\n", 'a'));
 	// printf("%d\n\n", printf("|test char a=%c|\n", 'a'));
 
-	// ft_printf("|test str bonjour=%s|\n", "bonjour");
-	// printf("|test str bonjour=%s|\n\n", "bonjour");
+	// // ft_printf("|test str bonjour=%s|\n", "bonjour");
+	// // printf("|test str bonjour=%s|\n\n", "bonjour");
 	// printf("%d\n", ft_printf("|test str bonjour=%s|\n", "bonjour"));
 	// printf("%d\n\n", printf("|test str bonjour=%s|\n", "bonjour"));
 
 
-	// ft_printf("|test str vide=%s|\n", "");
-	// printf("|test str vide=%s|\n\n", "");
+	// // ft_printf("|test str vide=%s|\n", "");
+	// // printf("|test str vide=%s|\n\n", "");
 	// printf("%d\n", ft_printf("|test str vide=%s|\n", ""));
 	// printf("%d\n\n", printf("|test str vide=%s|\n", ""));
 
-	// ft_printf("|test hexa lower=%x|\n", a);
-	// printf("|test hexa lower=%x|\n\n", a);
-	printf("%d\n", ft_printf("|test hexa lower=%x|\n", a));
-	printf("%d\n\n", printf("|test hexa lower=%x|\n", a));
+	// // ft_printf("|test hexa lower=%x|\n", a);
+	// // printf("|test hexa lower=%x|\n\n", a);
+	// printf("%d\n", ft_printf("|test hexa lower=%x|\n", a));
+	// printf("%d\n\n", printf("|test hexa lower=%x|\n", a));
 
-	// ft_printf("|test hexa upper=%X|\n", a);
-	// printf("|test hexa upper=%X|\n\n", a);
-	printf("%d\n", ft_printf("|test hexa upper=%X|\n", a));
-	printf("%d\n\n", printf("|test hexa upper=%X|\n", a));
+	// // ft_printf("|test hexa upper=%X|\n", a);
+	// // printf("|test hexa upper=%X|\n\n", a);
+	// printf("%d\n", ft_printf("|test hexa upper=%X|\n", a));
+	// printf("%d\n\n", printf("|test hexa upper=%X|\n", a));
 
-	// // ft_printf("|test decimal =%d|\n", a);
-	// // printf("|test decimal =%d|\n\n", a);
+	// // // // ft_printf("|test decimal =%d|\n", a);
+	// // // // printf("|test decimal =%d|\n\n", a);
 	// printf("%d\n", ft_printf("|test decimal =%d|\n", a));
 	// printf("%d\n\n", printf("|test decimal =%d|\n", a));
 
-	// // ft_printf("|test integer =%i|\n", a);
-	// // printf("|test integer =%i|\n\n", a);
+	// // // ft_printf("|test integer =%i|\n", a);
+	// // // printf("|test integer =%i|\n\n", a);
 	// printf("%d\n", ft_printf("|test integer =%i|\n", a));
 	// printf("%d\n\n", printf("|test integer =%i|\n", a));
 
@@ -181,4 +176,7 @@ int main(void)
 	// printf("|test adresse =%p|\n\n", "123456 bonjour");
 	// printf("%d\n", ft_printf("|test adresse =%p|\n", "123456 bonjour"));
 	// printf("%d\n", printf("|test adresse =%p|\n", "123456 bonjour"));
+
+	printf("%d\n",printf("vrai %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
+	printf("%d",ft_printf("mine %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
 }
