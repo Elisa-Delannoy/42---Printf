@@ -11,88 +11,51 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdio.h>
 
-int	ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int	ft_putstr(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(1, &s[i], 1);
-		i++;
-	}
-	return (i);
-}
-
-int	ft_convert10to16(long int nb, char c, int j)
+int	ft_convert10to16(size_t nb, char c, int j)
 {
 	if (nb >= 16)
 	{
 		j = ft_convert10to16(nb / 16, c, j);
 		j = ft_convert10to16(nb % 16, c, j);
 	}
-	else if ((nb < 16 && c == 'x') || (c == 'X' && nb < 10) || (nb < 16 && c == 'p'))
+	else if ((nb < 16 && c == 'x') || (c == 'X' && nb < 10)
+		|| (nb < 16 && c == 'p'))
 		j = j + ft_putchar(BASE16[nb]);
 	else if (nb > 9 && nb < 16 && c == 'X')
 		j = j + ft_putchar(BASE16[nb] - 32);
-	// printf("\nj hexa =%d\n", j);
 	return (j);
 }
 
-int	ft_putnbr(int n, int i) //long int meme valeur max que unsigned int
+int	ft_testneghexa(size_t nb)
 {
-	long int	nb;
-
-	nb = n;
-	if (nb < 0)
-	{
-		ft_putchar('-');
-		nb = -nb;
-		i++;
-	}
-	if (nb >= 10)
-	{
-		i = ft_putnbr(nb / 10, i);
-		i = ft_putnbr(nb % 10, i);
-	}
+	if (nb == 0)
+		return (ft_putstr("(nil)"));
 	else
-		i = i + ft_putchar(nb + 48);
-	return (i);
-}	
+	{
+		ft_putchar('0');
+		ft_putchar('x');
+		return (ft_convert10to16(nb, 'p', 0) + 2);
+	}
+}
 
 int	ft_conversions(char c, va_list argp)
 {
 	int	i;
-	
+
 	i = 0;
-	// if (c == '%')
-	// 	i = ft_putchar('%');
 	if (c == 'c')
 		i = ft_putchar(va_arg(argp, int));
 	else if (c == 's')
 		i = ft_putstr(va_arg(argp, char *));
 	else if (c == 'x' || c == 'X')
-		i = ft_convert10to16(va_arg(argp, int), c, 0);
+		i = ft_convert10to16(va_arg(argp, unsigned int), c, 0);
 	else if (c == 'd' || c == 'i')
-		i = ft_putnbr(va_arg(argp, long int), 0);
+		i = ft_putnbr(va_arg(argp, int), 0);
 	else if (c == 'u')
 		i = ft_putnbr(va_arg(argp, unsigned int), 0);
 	else if (c == 'p')
-	{	 
-		ft_putchar('0');
-		ft_putchar('x');
-		i = ft_convert10to16(va_arg(argp, unsigned long int), c, 0) + 2; /*2*putchar*/
-	}
+		i = (ft_testneghexa(va_arg(argp, size_t)));
 	return (i);
 }
 
@@ -111,20 +74,20 @@ int	ft_printf(const char *format, ...)
 			if (*format == '%')
 				i = i + ft_putchar('%');
 			else
-				i =  i + ft_conversions(*format, argp);
+				i = i + ft_conversions(*format, argp);
 		}
 		else
 			i = i + ft_putchar(*format);
-		// printf("i = %d\n", i);
 		format++;
 	}
 	va_end(argp);
 	return (i);
 }
 
+// #include <stdio.h>
 // int main(void)
 // {
-// 	int a = -1;
+// 	int a = 15254;
 
 	// // ft_printf("|test pourcemtage=%%|\n");
 	// // printf("|test pourcemtage=%%|\n\n");
@@ -140,7 +103,6 @@ int	ft_printf(const char *format, ...)
 	// // printf("|test str bonjour=%s|\n\n", "bonjour");
 	// printf("%d\n", ft_printf("|test str bonjour=%s|\n", "bonjour"));
 	// printf("%d\n\n", printf("|test str bonjour=%s|\n", "bonjour"));
-
 
 	// // ft_printf("|test str vide=%s|\n", "");
 	// // printf("|test str vide=%s|\n\n", "");
@@ -169,17 +131,11 @@ int	ft_printf(const char *format, ...)
 
 	// // ft_printf("|test unsigned integer =%u|\n", a);
 	// // printf("|test unsigned integer =%u|\n\n", a);
-	// printf("%d\n", ft_printf("|test unsigned integer =%u|\n", a));
-	// printf("%d\n\n", printf("|test unsigned integer =%u|\n", a));
+	// printf("%d\n", ft_printf("|test unsigned int =%u|\n", a));
+	// printf("%d\n\n", printf("|test unsigned int =%u|\n", a));
 
 	// ft_printf("|test adresse =%p|\n", "123456 bonjour");
 	// printf("|test adresse =%p|\n\n", "123456 bonjour");
-	// printf("%d\n", ft_printf("|test adresse =%p|\n", "123456 bonjour"));
-	// printf("%d\n", printf("|test adresse =%p|\n", "123456 bonjour"));
-
-
-
-
-	// printf("%d\n",printf("vrai %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
-	// printf("%d",ft_printf("mine %s %s %s %s %s \n", " - ", "", "4", "", "2 "));
+	// printf("%d\n", ft_printf("|test p =%p|\n", "123456 bonjour"));
+	// printf("%d\n", printf("|test p =%p|\n", "123456 bonjour"));
 // }
